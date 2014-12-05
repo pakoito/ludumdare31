@@ -24,6 +24,7 @@ allprojects {
         gdxVersion = '1.3.1'
         artemisVersion = '0.8.+'
         roboVMVersion = '0.0.11'
+        rxJavaVersion = '1.0.2'
     }
 
     repositories {
@@ -110,6 +111,7 @@ project(":core") {
 
         // Support for artemis-odb
         compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
+        compile "io.reactivex:rxjava:$rxJavaVersion"
     }
 }
 
