@@ -30,5 +30,9 @@
     <orderEntry type="library" exported="" name="Gradle: org.lwjgl.lwjgl:lwjgl_util:2.9.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.badlogicgames.jlayer:jlayer:1.0.1-gdx" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.jcraft:jorbis:0.0.17" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.projectlombok:lombok:1.14.8" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.slf4j:slf4j-api:1.7.7" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.slf4j:slf4j-log4j12:1.7.7" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: log4j:log4j:1.2.17" level="project" />
   </component>
 </module>
