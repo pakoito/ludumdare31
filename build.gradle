@@ -119,6 +119,7 @@ project(":core") {
         compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
         compile "io.reactivex:rxjava:$rxJavaVersion"
         compile 'org.slf4j:slf4j-api:1.7.7'
+        compile project(':cgfw-core')
     }
 }
 

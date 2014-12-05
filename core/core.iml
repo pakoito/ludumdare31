@@ -18,5 +18,6 @@
     <orderEntry type="library" exported="" name="Gradle: io.reactivex:rxjava:1.0.2" level="project" />
     <orderEntry type="library" exported="" name="Gradle: net.onedaybeard.artemis:artemis-odb:0.8.2-SNAPSHOT" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.slf4j:slf4j-api:1.7.7" level="project" />
+    <orderEntry type="module" module-name="cgfw-core" exported="" />
   </component>
 </module>

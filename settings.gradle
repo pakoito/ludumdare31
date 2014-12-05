@@ -1,1 +1,3 @@
-include 'desktop', 'html', 'core'
+include 'desktop', 'html', 'core', 'cgfw-core'
+
+project(':cgfw-core').projectDir = new File("$settingsDir/../../cardframework_workspace/cgfw-core")
