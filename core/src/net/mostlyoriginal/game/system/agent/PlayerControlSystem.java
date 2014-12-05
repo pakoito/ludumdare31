@@ -54,6 +54,10 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 
         anim.id = "player-idle";
 
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            Gdx.app.exit();
+        }
+
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             dx = -MOVEMENT_FACTOR;
             flip(player, false);
@@ -69,7 +73,7 @@ public class PlayerControlSystem extends EntityProcessingSystem {
         } else if (leapStrength>0) {
             if ( wm.onFloor ) dy = JUMP_FACTOR * (0.5f + MathUtils.clamp(leapStrength,0f,1f));
             leapStrength = 0;
-        };
+        }
 
         anim.speed = 1;
         if (dx != 0) {
