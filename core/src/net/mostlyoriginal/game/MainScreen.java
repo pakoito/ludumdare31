@@ -38,7 +38,6 @@ import net.mostlyoriginal.game.system.interact.PluckableSystem;
 import net.mostlyoriginal.paco.IKnownMove;
 import net.mostlyoriginal.paco.ReactiveInputs;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -196,9 +195,9 @@ public class MainScreen implements Screen {
 
             @Override
             public int getFramesInSecond() {
-                return 0;
+                return 30;
             }
-        })
+        });
     }
 
     @Override
