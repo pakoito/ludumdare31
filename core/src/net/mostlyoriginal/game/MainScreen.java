@@ -7,10 +7,7 @@ import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.MathUtils;
 import com.pacoworks.cardframework.framework.CardgameFramework;
@@ -37,6 +34,8 @@ import net.mostlyoriginal.game.system.agent.SlumbererSystem;
 import net.mostlyoriginal.game.system.interact.PluckableSystem;
 import net.mostlyoriginal.paco.IKnownMove;
 import net.mostlyoriginal.paco.ReactiveInputs;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -175,7 +174,7 @@ public class MainScreen implements Screen {
         reactiveInputs.observeMove(new IKnownMove() {
             @Override
             public List<Integer> getInputSequence() {
-                return Arrays.asList(1, 0, 0);
+                return Arrays.asList(Input.Keys.L, Input.Keys.O, Input.Keys.L);
             }
 
             @Override
@@ -185,7 +184,7 @@ public class MainScreen implements Screen {
 
             @Override
             public int getLeniencyFrames() {
-                return 0;
+                return 60;
             }
 
             @Override
@@ -195,7 +194,13 @@ public class MainScreen implements Screen {
 
             @Override
             public int getFramesInSecond() {
-                return 30;
+                return 60;
+            }
+        }).subscribeOn(Schedulers.newThread())
+        .subscribe(new Action1<List<Integer>>() {
+            @Override
+            public void call(List<Integer> integers) {
+                System.out.println(integers);
             }
         });
     }
