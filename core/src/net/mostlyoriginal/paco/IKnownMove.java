@@ -9,7 +9,7 @@ import java.util.List;
 public interface IKnownMove {
     public List<Integer> getInputSequence();
 
-    public String getMoveName();
+    public String getName();
 
     public int getLeniencyFrames();
 

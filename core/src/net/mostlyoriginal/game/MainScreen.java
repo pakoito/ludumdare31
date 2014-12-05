@@ -179,7 +179,7 @@ public class MainScreen implements Screen {
             }
 
             @Override
-            public String getMoveName() {
+            public String getName() {
                 return "attack";
             }
 
