@@ -19,7 +19,7 @@ public class CountCheckSystem extends BaseBlackjackSystem {
 
     private BasePhaseSystem[] pushSystems;
 
-    ComponentMapper<PlayerHand> playerHandComponentMapper;
+    private ComponentMapper<PlayerHand> playerHandComponentMapper;
 
     /**
      * Creates an entity system that uses the specified aspect as a matcher against entities.

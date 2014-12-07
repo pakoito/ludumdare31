@@ -21,7 +21,7 @@ public class DealHiddenSystem extends BaseBlackjackSystem {
 
     private BasePhaseSystem[] pushSystems;
 
-    ComponentMapper<PlayerHand> playerHandComponentMapper;
+    private ComponentMapper<PlayerHand> playerHandComponentMapper;
 
     public DealHiddenSystem(IGetPhaseFromId resolver) {
         super(Aspect.getAspectForAll(PlayerControlled.class, PlayerHand.class), resolver);

@@ -21,7 +21,7 @@ import net.mostlyoriginal.game.component.game.PlayerHand;
 @Wire
 public class DealShownSystem extends BaseBlackjackSystem {
 
-    ComponentMapper<PlayerHand> playerHandComponentMapper;
+    private ComponentMapper<PlayerHand> playerHandComponentMapper;
 
     private BasePhaseSystem[] pushSystems;
 

@@ -20,7 +20,7 @@ import com.pacoworks.cardframework.systems.BasePhaseSystem;
 @Wire
 public class PlayerChoiceSystem extends BaseBlackjackSystem {
 
-    ComponentMapper<PlayerHand> playerHandComponentMapper;
+    private ComponentMapper<PlayerHand> playerHandComponentMapper;
 
     private BasePhaseSystem[] pushSystems;
 

@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
+import com.pacoworks.cardframework.eventbus.EventCommander;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
 import net.mostlyoriginal.game.IGetPhaseFromId;
 import net.mostlyoriginal.game.component.game.PlayerPosition;
@@ -17,15 +18,18 @@ public class SelectNextPlayerSystem extends BaseBlackjackSystem {
 
     private final int mPlayerTotal;
 
-    ComponentMapper<PlayerPosition> playerHandComponentMapper;
+    private final EventCommander eventCommander;
+
+    private ComponentMapper<PlayerPosition> playerHandComponentMapper;
 
     /**
      * Creates an entity system that uses the specified aspect as a matcher against entities.
      *
      */
-    public SelectNextPlayerSystem(IGetPhaseFromId resolver, int playerTotal) {
+    public SelectNextPlayerSystem(IGetPhaseFromId resolver, int playerTotal, EventCommander eventCommander) {
         super(Aspect.getAspectForAll(PlayerPosition.class), resolver);
         this.mPlayerTotal = playerTotal;
+        this.eventCommander = eventCommander;
     }
 
     @Override
