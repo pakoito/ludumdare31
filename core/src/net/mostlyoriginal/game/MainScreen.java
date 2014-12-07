@@ -26,6 +26,7 @@ import net.mostlyoriginal.api.system.render.AnimRenderSystem;
 import net.mostlyoriginal.api.system.render.MapRenderSystem;
 import net.mostlyoriginal.api.system.script.EntitySpawnerSystem;
 import net.mostlyoriginal.api.system.script.SchedulerSystem;
+import net.mostlyoriginal.game.events.EventCommander;
 import net.mostlyoriginal.game.events.KeycodeEvent;
 import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
@@ -60,9 +61,13 @@ public class MainScreen implements Screen {
 
     private final HashMap<BlackJackSystems, BaseBlackjackSystem> phaseSystemsMap;
 
+    private final EventCommander commander;
+
     private AtomicBoolean mGameEnd = new AtomicBoolean(false);
+    private Object subscriptor;
 
     public MainScreen() {
+        commander = new EventCommander();
         phaseSystemsMap = new HashMap<BlackJackSystems, BaseBlackjackSystem>();
         IGetPhaseFromId resolver = new IGetPhaseFromId() {
             @Override
@@ -74,20 +79,20 @@ public class MainScreen implements Screen {
         phaseSystemsMap.put(BlackJackSystems.DealHidden, new DealHiddenSystem(resolver));
         phaseSystemsMap.put(BlackJackSystems.DealShown, new DealShownSystem(resolver));
         phaseSystemsMap.put(BlackJackSystems.PlayerChoice, new PlayerChoiceSystem(resolver));
-        phaseSystemsMap.put(BlackJackSystems.SelectNextPlayer, new PlayerChoiceSystem(resolver));
+        phaseSystemsMap.put(BlackJackSystems.SelectNextPlayer, new SelectNextPlayerSystem(resolver, 2, commander));
         cardgameFramework = CardgameFramework.builder().victoryChecker(new IVictoryDecider() {
             @Override
             public boolean isVictoryCondition() {
                 return false;
             }
         }).phaseSystems(new ArrayList<BasePhaseSystem>(phaseSystemsMap.values()))
-                .startingSystem(phaseSystemsMap.get(BlackJackSystems.SelectNextPlayer)).build();
+                .startingSystem(phaseSystemsMap.get(BlackJackSystems.SelectNextPlayer)).eventCommander(commander).build();
         reactiveInputs = new ReactiveInputs();
         inputMultiplexer = new InputMultiplexer(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 reactiveInputs.sendInputKeycode(keycode);
-                cardgameFramework.getCommander().postAnyEvent(new KeycodeEvent(keycode));
+                commander.postAnyEvent(new KeycodeEvent(keycode));
                 return super.keyDown(keycode);
             }
         });
@@ -212,12 +217,13 @@ public class MainScreen implements Screen {
             }
         });
 
-        cardgameFramework.getCommander().subscribe(new Object(){
+        subscriptor = new Object() {
             @Subscribe
-            public void gameEnd(){
+            public void gameEnd() {
                 mGameEnd.set(true);
             }
-        });
+        };
+        commander.subscribe(subscriptor);
     }
 
     @Override
@@ -256,6 +262,7 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose() {
+        commander.unsubscribe(subscriptor);
         cardgameFramework.end();
     }
 }
