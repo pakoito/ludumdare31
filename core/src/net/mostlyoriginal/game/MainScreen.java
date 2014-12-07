@@ -5,6 +5,7 @@ import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
+import com.artemis.utils.EntityBuilder;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.MathUtils;
@@ -229,8 +230,8 @@ public class MainScreen implements Screen {
             }
         };
         commander.subscribe(subscriptor);
-        world.createEntity().edit().add(new PlayerControlled()).add(new PlayerHand()).add(new PlayerPosition(0)).getEntity();
-        world.createEntity().edit().add(new PlayerControlled()).add(new PlayerHand()).add(new PlayerPosition(1)).getEntity();
+        new EntityBuilder(cardgameFramework.getWorld()).tag("player1").group("1").with(new PlayerControlled(), new PlayerPosition(0), new PlayerHand()).build();
+        new EntityBuilder(cardgameFramework.getWorld()).tag("player2").group("2").with(new PlayerPosition(1), new PlayerHand()).build();
     }
 
     @Override
