@@ -1,8 +1,6 @@
 
 package net.mostlyoriginal.game;
 
-import com.artemis.Aspect;
-import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
@@ -13,6 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.pacoworks.cardframework.framework.CardgameFramework;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
 import com.pacoworks.cardframework.systems.IVictoryDecider;
+import com.squareup.otto.Subscribe;
 import net.mostlyoriginal.api.system.anim.ColorAnimationSystem;
 import net.mostlyoriginal.api.system.camera.CameraShakeSystem;
 import net.mostlyoriginal.api.system.camera.CameraSystem;
@@ -27,18 +26,23 @@ import net.mostlyoriginal.api.system.render.AnimRenderSystem;
 import net.mostlyoriginal.api.system.render.MapRenderSystem;
 import net.mostlyoriginal.api.system.script.EntitySpawnerSystem;
 import net.mostlyoriginal.api.system.script.SchedulerSystem;
+import net.mostlyoriginal.game.events.KeycodeEvent;
 import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
 import net.mostlyoriginal.game.system.agent.PlayerControlSystem;
 import net.mostlyoriginal.game.system.agent.SlumbererSystem;
+import net.mostlyoriginal.game.system.game.*;
 import net.mostlyoriginal.game.system.interact.PluckableSystem;
 import net.mostlyoriginal.paco.IKnownMove;
 import net.mostlyoriginal.paco.ReactiveInputs;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Daan van Yperen
@@ -54,37 +58,42 @@ public class MainScreen implements Screen {
 
     private final ReactiveInputs reactiveInputs;
 
+    private final HashMap<BlackJackSystems, BaseBlackjackSystem> phaseSystemsMap;
+
+    private AtomicBoolean mGameEnd = new AtomicBoolean(false);
+
     public MainScreen() {
-        BasePhaseSystem basePhaseSystem = new BasePhaseSystem(Aspect.getEmpty()) {
+        phaseSystemsMap = new HashMap<BlackJackSystems, BaseBlackjackSystem>();
+        IGetPhaseFromId resolver = new IGetPhaseFromId() {
             @Override
-            protected void process(Entity e) {
-
-            }
-
-            @Override
-            public BasePhaseSystem[] pushSystems() {
-                return new BasePhaseSystem[0];
+            public BaseBlackjackSystem system(BlackJackSystems name) {
+                return phaseSystemsMap.get(name);
             }
         };
+        phaseSystemsMap.put(BlackJackSystems.CountCheck, new CountCheckSystem(resolver));
+        phaseSystemsMap.put(BlackJackSystems.DealHidden, new DealHiddenSystem(resolver));
+        phaseSystemsMap.put(BlackJackSystems.DealShown, new DealShownSystem(resolver));
+        phaseSystemsMap.put(BlackJackSystems.PlayerChoice, new PlayerChoiceSystem(resolver));
+        phaseSystemsMap.put(BlackJackSystems.SelectNextPlayer, new PlayerChoiceSystem(resolver));
         cardgameFramework = CardgameFramework.builder().victoryChecker(new IVictoryDecider() {
             @Override
             public boolean isVictoryCondition() {
                 return false;
             }
-        }).phaseSystems(Arrays.asList(basePhaseSystem)).build();
+        }).phaseSystems(new ArrayList<BasePhaseSystem>(phaseSystemsMap.values()))
+                .startingSystem(phaseSystemsMap.get(BlackJackSystems.SelectNextPlayer)).build();
         reactiveInputs = new ReactiveInputs();
-        inputMultiplexer = new InputMultiplexer(new InputAdapter(){
+        inputMultiplexer = new InputMultiplexer(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 reactiveInputs.sendInputKeycode(keycode);
+                cardgameFramework.getCommander().postAnyEvent(new KeycodeEvent(keycode));
                 return super.keyDown(keycode);
             }
         });
         Gdx.input.setInputProcessor(inputMultiplexer);
-
-        //FIXME remove
+        // FIXME remove
         mockInit();
-
         world = new World();
         // @todo comment out systems you do not need for your game.
         // NS2D:
@@ -170,7 +179,7 @@ public class MainScreen implements Screen {
         world.initialize();
     }
 
-    private void mockInit(){
+    private void mockInit() {
         reactiveInputs.observeMove(new IKnownMove() {
             @Override
             public List<Integer> getInputSequence() {
@@ -196,11 +205,17 @@ public class MainScreen implements Screen {
             public int getFramesInSecond() {
                 return 60;
             }
-        }).subscribeOn(Schedulers.newThread())
-        .subscribe(new Action1<List<Integer>>() {
+        }).subscribeOn(Schedulers.newThread()).subscribe(new Action1<List<Integer>>() {
             @Override
             public void call(List<Integer> integers) {
                 System.out.println(integers);
+            }
+        });
+
+        cardgameFramework.getCommander().subscribe(new Object(){
+            @Subscribe
+            public void gameEnd(){
+                mGameEnd.set(true);
             }
         });
     }
@@ -212,6 +227,11 @@ public class MainScreen implements Screen {
         // limit world delta to prevent clipping through walls.
         world.setDelta(MathUtils.clamp(delta, 0, 1 / 15f));
         world.process();
+        if (!mGameEnd.get()) {
+            cardgameFramework.getWorld().process();
+        } else {
+            Gdx.app.exit();
+        }
     }
 
     @Override
@@ -236,5 +256,6 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose() {
+        cardgameFramework.end();
     }
 }
