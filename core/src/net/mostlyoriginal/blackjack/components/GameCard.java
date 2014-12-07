@@ -16,10 +16,20 @@ public class GameCard {
         this.number = number;
     }
 
-    public static final GameCard getRandomCard() {
+    public static GameCard getRandomCard() {
         Random random = new Random();
         return new GameCard(Suit.fromInt(random.nextInt(Suit.values().length)),
                 Number.fromInt(random.nextInt(Number.values().length)));
+    }
+
+    public static GameCard[] getDeck() {
+        GameCard[] deck = new GameCard[Suit.values().length * Number.values().length];
+        for (int i = 0; i < Suit.values().length; i++) {
+            for (int j = 0; j < Number.values().length; j++) {
+                deck[i * Number.values().length + j] = new GameCard(Suit.fromInt(i), Number.fromInt(j));
+            }
+        }
+        return deck;
     }
 
     public enum Suit {

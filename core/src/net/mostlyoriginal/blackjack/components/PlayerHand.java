@@ -17,6 +17,10 @@ public class PlayerHand extends Component {
         this.hand = new ArrayList<GameCard>();
     }
 
+    public PlayerHand(List<GameCard> hand) {
+        this.hand = hand;
+    }
+
     public int getCount() {
         List<GameCard> sortedHand = new ArrayList<GameCard>(hand);
         sortedHand.sort(new Comparator<GameCard>() {

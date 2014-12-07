@@ -5,6 +5,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
+import com.artemis.managers.TagManager;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
 import net.mostlyoriginal.blackjack.BlackJackSystems;
 import net.mostlyoriginal.game.component.agent.PlayerControlled;
@@ -18,16 +19,26 @@ import net.mostlyoriginal.blackjack.components.PlayerHand;
 public class DealShownSystem extends BaseBlackjackSystem {
     private ComponentMapper<PlayerHand> playerHandComponentMapper;
 
+    private TagManager tagManager;
+
     private BasePhaseSystem[] pushSystems = new BasePhaseSystem[0];
+
+    private PlayerHand deck;
 
     public DealShownSystem(IGetPhaseFromId resolver) {
         super(Aspect.getAspectForAll(PlayerControlled.class), resolver);
     }
 
     @Override
+    protected void begin() {
+        super.begin();
+        deck = playerHandComponentMapper.get(tagManager.getEntity("deck"));
+    }
+
+    @Override
     protected void process(Entity e) {
         PlayerHand hand = playerHandComponentMapper.get(e);
-        GameCard draw = GameCard.getRandomCard();
+        GameCard draw = deck.hand.remove(0);
         hand.hand.add(draw);
         log.trace(e + " publicly draw: " + draw);
         pushSystems = new BasePhaseSystem[1];

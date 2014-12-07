@@ -9,14 +9,15 @@ import com.pacoworks.cardframework.framework.CardgameFramework;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
 import com.pacoworks.cardframework.systems.IVictoryDecider;
 import com.squareup.otto.Subscribe;
-import net.mostlyoriginal.game.MainScreen;
-import net.mostlyoriginal.game.component.agent.PlayerControlled;
+import net.mostlyoriginal.blackjack.components.GameCard;
 import net.mostlyoriginal.blackjack.components.PlayerHand;
 import net.mostlyoriginal.blackjack.components.PlayerPosition;
-import net.mostlyoriginal.game.events.EventCommander;
-import net.mostlyoriginal.game.events.KeycodeEvent;
 import net.mostlyoriginal.blackjack.events.GameFinishedEvent;
 import net.mostlyoriginal.blackjack.systems.*;
+import net.mostlyoriginal.game.MainScreen;
+import net.mostlyoriginal.game.component.agent.PlayerControlled;
+import net.mostlyoriginal.game.events.EventCommander;
+import net.mostlyoriginal.game.events.KeycodeEvent;
 import net.mostlyoriginal.paco.IKnownMove;
 import net.mostlyoriginal.paco.ReactiveInputs;
 import org.slf4j.Logger;
@@ -24,10 +25,7 @@ import org.slf4j.LoggerFactory;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -128,6 +126,9 @@ public class BlackjackGame {
         commander.subscribe(subscriptor);
         new EntityBuilder(cardgameFramework.getWorld()).tag("player1").group("1").with(new PlayerControlled(), new PlayerPosition(0), new PlayerHand()).build();
         new EntityBuilder(cardgameFramework.getWorld()).tag("player2").group("2").with(new PlayerPosition(1), new PlayerHand()).build();
+        ArrayList<GameCard> shuffledDeck = new ArrayList<GameCard>(Arrays.asList(GameCard.getDeck()));
+        Collections.shuffle(shuffledDeck);
+        new EntityBuilder(cardgameFramework.getWorld()).tag("deck").with(new PlayerHand(shuffledDeck)).build();
     }
 
     public void step() {
