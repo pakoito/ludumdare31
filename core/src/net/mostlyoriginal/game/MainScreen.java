@@ -27,6 +27,7 @@ import net.mostlyoriginal.api.system.render.MapRenderSystem;
 import net.mostlyoriginal.api.system.script.EntitySpawnerSystem;
 import net.mostlyoriginal.api.system.script.SchedulerSystem;
 import net.mostlyoriginal.game.events.EventCommander;
+import net.mostlyoriginal.game.events.GameFinishedEvent;
 import net.mostlyoriginal.game.events.KeycodeEvent;
 import net.mostlyoriginal.game.manager.AssetSystem;
 import net.mostlyoriginal.game.manager.EntityFactorySystem;
@@ -219,7 +220,7 @@ public class MainScreen implements Screen {
 
         subscriptor = new Object() {
             @Subscribe
-            public void gameEnd() {
+            public void gameEnd(GameFinishedEvent event) {
                 mGameEnd.set(true);
             }
         };
@@ -232,7 +233,7 @@ public class MainScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         // limit world delta to prevent clipping through walls.
         world.setDelta(MathUtils.clamp(delta, 0, 1 / 15f));
-        world.process();
+//        world.process();
         if (!mGameEnd.get()) {
             cardgameFramework.getWorld().process();
         } else {
