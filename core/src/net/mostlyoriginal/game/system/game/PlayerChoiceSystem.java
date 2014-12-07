@@ -26,13 +26,13 @@ public class PlayerChoiceSystem extends BaseBlackjackSystem {
 
     @Override
     protected void process(Entity e) {
-        if (Gdx.input.isButtonPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
             pushSystems = new BasePhaseSystem[1];
             pushSystems[0] = getPhaseFromName(BlackJackSystems.DealHidden);
-        } else if (Gdx.input.isButtonPressed(Input.Keys.D)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
             pushSystems = new BasePhaseSystem[1];
             pushSystems[0] = getPhaseFromName(BlackJackSystems.DealShown);
-        } else if (Gdx.input.isButtonPressed(Input.Keys.R)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             pushSystems = new BasePhaseSystem[1];
             pushSystems[0] = getPhaseFromName(BlackJackSystems.SelectNextPlayer);
         } else {

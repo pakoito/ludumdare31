@@ -4,9 +4,8 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
+import net.mostlyoriginal.game.BlackJackSystems;
 import net.mostlyoriginal.game.IGetPhaseFromId;
 import net.mostlyoriginal.game.component.agent.PlayerControlled;
 import net.mostlyoriginal.game.component.game.GameCard;
@@ -29,15 +28,15 @@ public class DealHiddenSystem extends BaseBlackjackSystem {
 
     @Override
     protected void process(Entity e) {
-        if (Gdx.input.isButtonPressed(Input.Keys.D)){
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.D)){
             PlayerHand hand = playerHandComponentMapper.get(e);
             hand.hand.add(new GameCard(GameCard.Suit.CLUBS, GameCard.Number.A));
             pushSystems = new BasePhaseSystem[1];
-            pushSystems[0] = new CountCheckSystem(null);
-        } else {
-            pushSystems = new BasePhaseSystem[1];
-            pushSystems[0] = this;
-        }
+            pushSystems[0] = getPhaseFromName(BlackJackSystems.CountCheck);
+//        } else {
+//            pushSystems = new BasePhaseSystem[1];
+//            pushSystems[0] = this;
+//        }
     }
 
     @Override

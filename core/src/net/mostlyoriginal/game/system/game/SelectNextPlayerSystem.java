@@ -35,9 +35,9 @@ public class SelectNextPlayerSystem extends BaseBlackjackSystem {
 
     private boolean isNext;
 
-    private int mWinner;
+    private int mWinner = -1;
 
-    private int mWinnerCount;
+    private int mWinnerCount = -1;
 
     private boolean isEnded;
 
@@ -67,7 +67,7 @@ public class SelectNextPlayerSystem extends BaseBlackjackSystem {
         } else {
             if (playerControlledComponentMapper.getSafe(e) != null) {
                 if (position + 1 >= mPlayerTotal) {
-                    eventCommander.postAnyEvent(new GameFinishedEvent(mWinner, mWinnerCount));
+                    eventCommander.postAnyEvent(new GameFinishedEvent(mWinner + 1, mWinnerCount));
                     isEnded = true;
                 } else {
                     isNext = true;
