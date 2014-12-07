@@ -125,7 +125,6 @@ public class MainScreen implements Screen {
         world.setSystem(new MapRenderSystem());
         world.setSystem(new AnimRenderSystem());
         world.initialize();
-
     }
 
     @Override

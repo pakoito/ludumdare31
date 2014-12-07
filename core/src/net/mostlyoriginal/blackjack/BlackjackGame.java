@@ -17,15 +17,13 @@ import net.mostlyoriginal.blackjack.systems.*;
 import net.mostlyoriginal.game.MainScreen;
 import net.mostlyoriginal.game.component.agent.PlayerControlled;
 import net.mostlyoriginal.game.events.EventCommander;
-import net.mostlyoriginal.game.events.KeycodeEvent;
-import net.mostlyoriginal.paco.IKnownMove;
-import net.mostlyoriginal.paco.ReactiveInputs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -37,8 +35,6 @@ public class BlackjackGame {
     public static final Logger log = LoggerFactory.getLogger(MainScreen.class);
 
     private final CardgameFramework cardgameFramework;
-
-    private final ReactiveInputs reactiveInputs;
 
     private final HashMap<BlackJackSystems, BaseBlackjackSystem> phaseSystemsMap;
 
@@ -69,12 +65,12 @@ public class BlackjackGame {
             }
         }).phaseSystems(new ArrayList<BasePhaseSystem>(phaseSystemsMap.values()))
                 .startingSystem(phaseSystemsMap.get(BlackJackSystems.DealHidden)).eventCommander(commander).build();
-        reactiveInputs = new ReactiveInputs();
         InputMultiplexer inputMultiplexer = new InputMultiplexer(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
-                reactiveInputs.sendInputKeycode(keycode);
-                commander.postAnyEvent(new KeycodeEvent(keycode));
+                if (keycode == Input.Keys.ESCAPE){
+                    Gdx.app.exit();
+                }
                 return super.keyDown(keycode);
             }
         });
@@ -84,38 +80,6 @@ public class BlackjackGame {
     }
 
     private void initBlackJack() {
-        reactiveInputs.observeMove(new IKnownMove() {
-            @Override
-            public List<Integer> getInputSequence() {
-                return Arrays.asList(Input.Keys.L, Input.Keys.O, Input.Keys.L);
-            }
-
-            @Override
-            public String getName() {
-                return "attack";
-            }
-
-            @Override
-            public int getLeniencyFrames() {
-                return 60;
-            }
-
-            @Override
-            public int getMaxInputErrors() {
-                return 0;
-            }
-
-            @Override
-            public int getFramesInSecond() {
-                return 60;
-            }
-        }).subscribeOn(Schedulers.newThread()).subscribe(new Action1<List<Integer>>() {
-            @Override
-            public void call(List<Integer> integers) {
-                System.out.println(integers);
-            }
-        });
-
         subscriptor = new Object() {
             @Subscribe
             public void gameEnd(GameFinishedEvent event) {
