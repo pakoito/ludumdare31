@@ -9,11 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
 import net.mostlyoriginal.blackjack.BlackJackSystems;
-import net.mostlyoriginal.game.component.agent.PlayerControlled;
-import net.mostlyoriginal.blackjack.components.GameCard;
 import net.mostlyoriginal.blackjack.components.PlayerHand;
-
-import java.util.ArrayList;
+import net.mostlyoriginal.game.component.agent.PlayerControlled;
 
 /**
  * Created by Paco on 07/12/2014. See LICENSE.md
@@ -37,19 +34,17 @@ public class PlayerChoiceSystem extends BaseBlackjackSystem {
     protected void process(Entity e) {
         PlayerHand hand = playerHandComponentMapper.get(e);
         if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-            log.trace("Hand: " + hand.hand);
+            log.trace("Showing card, drawing secretly, with: " + hand.hand);
             pushSystems = new BasePhaseSystem[1];
             pushSystems[0] = getPhaseFromName(BlackJackSystems.DealHidden);
             firstEnter = true;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-            ArrayList visibleHand = new ArrayList<GameCard>(hand.hand);
-            visibleHand.remove(visibleHand.size() - 1);
-            log.trace("Hiding card, visible hand: " + visibleHand);
+            log.trace("Hiding card, drawing openly, with: " + hand.hand);
             pushSystems = new BasePhaseSystem[1];
             pushSystems[0] = getPhaseFromName(BlackJackSystems.DealShown);
             firstEnter = true;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-            log.trace("Player checks");
+            log.trace("Player checks with: " + hand.hand);
             pushSystems = new BasePhaseSystem[1];
             pushSystems[0] = getPhaseFromName(BlackJackSystems.SelectNextPlayer);
             firstEnter = true;
