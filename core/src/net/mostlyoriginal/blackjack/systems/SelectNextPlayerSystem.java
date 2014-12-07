@@ -1,5 +1,5 @@
 
-package net.mostlyoriginal.game.system.blackjack;
+package net.mostlyoriginal.blackjack.systems;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -7,12 +7,12 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.pacoworks.cardframework.eventbus.IEventCommander;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
-import net.mostlyoriginal.game.BlackJackSystems;
+import net.mostlyoriginal.blackjack.BlackJackSystems;
 import net.mostlyoriginal.game.component.agent.PlayerControlled;
-import net.mostlyoriginal.game.component.blackjack.PlayerHand;
-import net.mostlyoriginal.game.component.blackjack.PlayerPosition;
+import net.mostlyoriginal.blackjack.components.PlayerHand;
+import net.mostlyoriginal.blackjack.components.PlayerPosition;
 import net.mostlyoriginal.game.events.EventCommander;
-import net.mostlyoriginal.game.events.blackjack.GameFinishedEvent;
+import net.mostlyoriginal.blackjack.events.GameFinishedEvent;
 
 /**
  * Created by Paco on 07/12/2014. See LICENSE.md

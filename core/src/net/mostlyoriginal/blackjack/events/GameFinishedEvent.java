@@ -1,4 +1,4 @@
-package net.mostlyoriginal.game.events.blackjack;
+package net.mostlyoriginal.blackjack.events;
 
 import com.pacoworks.cardframework.eventbus.events.BaseEvent;
 

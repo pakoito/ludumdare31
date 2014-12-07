@@ -1,4 +1,4 @@
-package net.mostlyoriginal.game.component.blackjack;
+package net.mostlyoriginal.blackjack.components;
 
 import com.artemis.Component;
 

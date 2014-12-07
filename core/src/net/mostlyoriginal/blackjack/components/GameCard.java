@@ -1,5 +1,5 @@
 
-package net.mostlyoriginal.game.component.blackjack;
+package net.mostlyoriginal.blackjack.components;
 
 /**
  * Created by Paco on 07/12/2014. See LICENSE.md

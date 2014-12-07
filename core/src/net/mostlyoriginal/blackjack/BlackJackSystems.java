@@ -1,4 +1,4 @@
-package net.mostlyoriginal.game;
+package net.mostlyoriginal.blackjack;
 
 /**
  * Created by Paco on 07/12/2014.

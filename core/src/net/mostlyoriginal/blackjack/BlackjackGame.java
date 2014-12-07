@@ -1,4 +1,4 @@
-package net.mostlyoriginal.game;
+package net.mostlyoriginal.blackjack;
 
 import com.artemis.utils.EntityBuilder;
 import com.badlogic.gdx.Gdx;
@@ -9,13 +9,14 @@ import com.pacoworks.cardframework.framework.CardgameFramework;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
 import com.pacoworks.cardframework.systems.IVictoryDecider;
 import com.squareup.otto.Subscribe;
+import net.mostlyoriginal.game.MainScreen;
 import net.mostlyoriginal.game.component.agent.PlayerControlled;
-import net.mostlyoriginal.game.component.blackjack.PlayerHand;
-import net.mostlyoriginal.game.component.blackjack.PlayerPosition;
+import net.mostlyoriginal.blackjack.components.PlayerHand;
+import net.mostlyoriginal.blackjack.components.PlayerPosition;
 import net.mostlyoriginal.game.events.EventCommander;
 import net.mostlyoriginal.game.events.KeycodeEvent;
-import net.mostlyoriginal.game.events.blackjack.GameFinishedEvent;
-import net.mostlyoriginal.game.system.blackjack.*;
+import net.mostlyoriginal.blackjack.events.GameFinishedEvent;
+import net.mostlyoriginal.blackjack.systems.*;
 import net.mostlyoriginal.paco.IKnownMove;
 import net.mostlyoriginal.paco.ReactiveInputs;
 import org.slf4j.Logger;
