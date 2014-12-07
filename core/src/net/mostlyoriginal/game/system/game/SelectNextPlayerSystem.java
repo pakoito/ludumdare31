@@ -57,23 +57,32 @@ public class SelectNextPlayerSystem extends BaseBlackjackSystem {
     protected void process(Entity e) {
         int position = playerPositionComponentMapper.get(e).position;
         int count = playerHandComponentMapper.get(e).getCount();
-        if (count < 22 && count > mWinnerCount) {
+        if (count > 0 && count < 22 && count > mWinnerCount) {
             mWinner = position;
             mWinnerCount = count;
         }
         if (isNext) {
             e.edit().add(new PlayerControlled());
             isNext = false;
+            log.trace("Turn for player " + (position + 1) + "");
         } else {
             if (playerControlledComponentMapper.getSafe(e) != null) {
                 if (position + 1 >= mPlayerTotal) {
-                    eventCommander.postAnyEvent(new GameFinishedEvent(mWinner + 1, mWinnerCount));
                     isEnded = true;
                 } else {
                     isNext = true;
                 }
                 e.edit().remove(PlayerControlled.class);
             }
+        }
+    }
+
+    @Override
+    protected void end() {
+        super.end();
+        log.trace("Player " + (mWinner + 1) + " is ahead");
+        if (isEnded){
+            eventCommander.postAnyEvent(new GameFinishedEvent(mWinner + 1, mWinnerCount));
         }
     }
 

@@ -1,3 +1,4 @@
+
 package net.mostlyoriginal.game.system.game;
 
 import com.artemis.Aspect;
@@ -12,12 +13,10 @@ import net.mostlyoriginal.game.component.game.GameCard;
 import net.mostlyoriginal.game.component.game.PlayerHand;
 
 /**
- * Created by Paco on 07/12/2014.
- * See LICENSE.md
+ * Created by Paco on 07/12/2014. See LICENSE.md
  */
 @Wire
 public class DealHiddenSystem extends BaseBlackjackSystem {
-
     private BasePhaseSystem[] pushSystems = new BasePhaseSystem[0];
 
     private ComponentMapper<PlayerHand> playerHandComponentMapper;
@@ -28,15 +27,12 @@ public class DealHiddenSystem extends BaseBlackjackSystem {
 
     @Override
     protected void process(Entity e) {
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.D)){
-            PlayerHand hand = playerHandComponentMapper.get(e);
-            hand.hand.add(new GameCard(GameCard.Suit.CLUBS, GameCard.Number.A));
-            pushSystems = new BasePhaseSystem[1];
-            pushSystems[0] = getPhaseFromName(BlackJackSystems.CountCheck);
-//        } else {
-//            pushSystems = new BasePhaseSystem[1];
-//            pushSystems[0] = this;
-//        }
+        PlayerHand hand = playerHandComponentMapper.get(e);
+        GameCard draw = new GameCard(GameCard.Suit.CLUBS, GameCard.Number.A);
+        hand.hand.add(draw);
+        log.trace(e + " secretly draw: " + draw);
+        pushSystems = new BasePhaseSystem[1];
+        pushSystems[0] = getPhaseFromName(BlackJackSystems.CountCheck);
     }
 
     @Override

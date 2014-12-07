@@ -33,10 +33,15 @@ public class CountCheckSystem extends BaseBlackjackSystem {
     @Override
     protected void process(Entity e) {
         PlayerHand hand = playerHandComponentMapper.get(e);
-        if (hand.getCount() > 21){
+        log.trace("Checking " + e + " card count");
+        int count = hand.getCount();
+        if (count > 21){
+            log.trace(e + " cards are over 21: " + count);
+            log.trace("Moving to next player");
             pushSystems = new BasePhaseSystem[1];
             pushSystems[0] = getPhaseFromName(BlackJackSystems.SelectNextPlayer);
         } else {
+            log.trace("Count correct: " + count);
             pushSystems = new BasePhaseSystem[1];
             pushSystems[0] = getPhaseFromName(BlackJackSystems.PlayerChoice);
         }

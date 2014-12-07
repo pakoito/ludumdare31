@@ -41,6 +41,8 @@ import net.mostlyoriginal.game.system.game.*;
 import net.mostlyoriginal.game.system.interact.PluckableSystem;
 import net.mostlyoriginal.paco.IKnownMove;
 import net.mostlyoriginal.paco.ReactiveInputs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
@@ -55,6 +57,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class MainScreen implements Screen {
     public static final int CAMERA_ZOOM_FACTOR = 3;
+
+    public static final Logger log = LoggerFactory.getLogger(MainScreen.class);
 
     private final World world;
 
@@ -226,6 +230,7 @@ public class MainScreen implements Screen {
         subscriptor = new Object() {
             @Subscribe
             public void gameEnd(GameFinishedEvent event) {
+                log.trace("Game ended, winner is player " + event.getWinnerPosition() + " with " + event.getWinnerCount());
                 mGameEnd.set(true);
             }
         };

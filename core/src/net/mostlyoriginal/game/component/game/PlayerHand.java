@@ -18,7 +18,8 @@ public class PlayerHand extends Component {
     }
 
     public int getCount() {
-        hand.sort(new Comparator<GameCard>() {
+        List<GameCard> sortedHand = new ArrayList<GameCard>(hand);
+        sortedHand.sort(new Comparator<GameCard>() {
             @Override
             public int compare(GameCard o1, GameCard o2) {
                 int comparison = 0;
