@@ -1,5 +1,5 @@
 
-package net.mostlyoriginal.game.system.game;
+package net.mostlyoriginal.game.system.blackjack;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -9,10 +9,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
 import net.mostlyoriginal.game.BlackJackSystems;
-import net.mostlyoriginal.game.IGetPhaseFromId;
 import net.mostlyoriginal.game.component.agent.PlayerControlled;
-import net.mostlyoriginal.game.component.game.GameCard;
-import net.mostlyoriginal.game.component.game.PlayerHand;
+import net.mostlyoriginal.game.component.blackjack.GameCard;
+import net.mostlyoriginal.game.component.blackjack.PlayerHand;
 
 import java.util.ArrayList;
 

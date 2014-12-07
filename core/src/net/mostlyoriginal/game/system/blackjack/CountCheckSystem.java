@@ -1,4 +1,4 @@
-package net.mostlyoriginal.game.system.game;
+package net.mostlyoriginal.game.system.blackjack;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -6,9 +6,8 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
 import net.mostlyoriginal.game.BlackJackSystems;
-import net.mostlyoriginal.game.IGetPhaseFromId;
 import net.mostlyoriginal.game.component.agent.PlayerControlled;
-import net.mostlyoriginal.game.component.game.PlayerHand;
+import net.mostlyoriginal.game.component.blackjack.PlayerHand;
 
 /**
  * Created by Paco on 07/12/2014.

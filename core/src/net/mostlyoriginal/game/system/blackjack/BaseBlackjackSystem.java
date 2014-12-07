@@ -1,9 +1,8 @@
-package net.mostlyoriginal.game.system.game;
+package net.mostlyoriginal.game.system.blackjack;
 
 import com.artemis.Aspect;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
 import net.mostlyoriginal.game.BlackJackSystems;
-import net.mostlyoriginal.game.IGetPhaseFromId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

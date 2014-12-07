@@ -1,5 +1,5 @@
 
-package net.mostlyoriginal.game.component.game;
+package net.mostlyoriginal.game.component.blackjack;
 
 import com.artemis.Component;
 
