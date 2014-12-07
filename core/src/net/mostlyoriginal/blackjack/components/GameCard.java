@@ -1,6 +1,8 @@
 
 package net.mostlyoriginal.blackjack.components;
 
+import java.util.Random;
+
 /**
  * Created by Paco on 07/12/2014. See LICENSE.md
  */
@@ -14,8 +16,22 @@ public class GameCard {
         this.number = number;
     }
 
+    public static final GameCard getRandomCard() {
+        Random random = new Random();
+        return new GameCard(Suit.fromInt(random.nextInt(Suit.values().length)),
+                Number.fromInt(random.nextInt(Number.values().length)));
+    }
+
     public enum Suit {
-        SPADES, CLUBS, HEARTS, DIAMONDS
+        SPADES, CLUBS, HEARTS, DIAMONDS;
+        private static Suit fromInt(int value) {
+            Suit result = SPADES;
+            Suit[] suits = Suit.values();
+            if (value >= 0 && value < suits.length) {
+                result = suits[value];
+            }
+            return result;
+        }
     }
 
     public enum Number {
@@ -50,6 +66,15 @@ public class GameCard {
 
         Number(int[] values) {
             this.values = values;
+        }
+
+        private static Number fromInt(int value) {
+            Number result = A;
+            Number[] suits = Number.values();
+            if (value >= 0 && value < suits.length) {
+                result = suits[value];
+            }
+            return result;
         }
     }
 

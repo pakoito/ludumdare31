@@ -27,7 +27,7 @@ public class DealHiddenSystem extends BaseBlackjackSystem {
     @Override
     protected void process(Entity e) {
         PlayerHand hand = playerHandComponentMapper.get(e);
-        GameCard draw = new GameCard(GameCard.Suit.CLUBS, GameCard.Number.A);
+        GameCard draw = GameCard.getRandomCard();
         hand.hand.add(draw);
         log.trace(e + " secretly draw: " + draw);
         pushSystems = new BasePhaseSystem[1];

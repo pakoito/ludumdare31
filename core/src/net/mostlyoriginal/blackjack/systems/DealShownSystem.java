@@ -27,7 +27,7 @@ public class DealShownSystem extends BaseBlackjackSystem {
     @Override
     protected void process(Entity e) {
         PlayerHand hand = playerHandComponentMapper.get(e);
-        GameCard draw = new GameCard(GameCard.Suit.HEARTS, GameCard.Number.Q);
+        GameCard draw = GameCard.getRandomCard();
         hand.hand.add(draw);
         log.trace(e + " publicly draw: " + draw);
         pushSystems = new BasePhaseSystem[1];
