@@ -6,11 +6,4 @@ package net.mostlyoriginal.blackjack;
  */
 public enum BlackJackSystems {
     CountCheck, DealHidden, DealShown, PlayerChoice, SelectNextPlayer
-
-//    phaseSystemsMap.put("CountCheck", new CountCheckSystem(resolver));
-//    phaseSystemsMap.put("DealHidden", new DealHiddenSystem(resolver));
-//    phaseSystemsMap.put("DealShown", new DealShownSystem(resolver));
-//    phaseSystemsMap.put("PlayerChoice", new PlayerChoiceSystem(resolver));
-//    phaseSystemsMap.put("SelectNextPlayer", new PlayerChoiceSystem(resolver));
-
 }
