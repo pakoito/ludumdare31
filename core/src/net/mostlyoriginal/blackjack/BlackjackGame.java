@@ -1,3 +1,4 @@
+
 package net.mostlyoriginal.blackjack;
 
 import com.artemis.utils.EntityBuilder;
@@ -27,11 +28,9 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Created by Paco on 07/12/2014.
- * See LICENSE.md
+ * Created by Paco on 07/12/2014. See LICENSE.md
  */
 public class BlackjackGame {
-
     public static final Logger log = LoggerFactory.getLogger(MainScreen.class);
 
     private final CardgameFramework cardgameFramework;
@@ -44,7 +43,7 @@ public class BlackjackGame {
 
     private Object subscriptor;
 
-    public BlackjackGame(){
+    public BlackjackGame() {
         commander = new EventCommander();
         phaseSystemsMap = new HashMap<BlackJackSystems, BaseBlackjackSystem>();
         IGetPhaseFromId resolver = new IGetPhaseFromId() {
@@ -57,25 +56,26 @@ public class BlackjackGame {
         phaseSystemsMap.put(BlackJackSystems.DealHidden, new DealHiddenSystem(resolver));
         phaseSystemsMap.put(BlackJackSystems.DealShown, new DealShownSystem(resolver));
         phaseSystemsMap.put(BlackJackSystems.PlayerChoice, new PlayerChoiceSystem(resolver));
-        phaseSystemsMap.put(BlackJackSystems.SelectNextPlayer, new SelectNextPlayerSystem(resolver, 2, commander));
+        phaseSystemsMap.put(BlackJackSystems.SelectNextPlayer, new SelectNextPlayerSystem(resolver,
+                2, commander));
         cardgameFramework = CardgameFramework.builder().victoryChecker(new IVictoryDecider() {
             @Override
             public boolean isVictoryCondition() {
                 return mGameEnd.get();
             }
         }).phaseSystems(new ArrayList<BasePhaseSystem>(phaseSystemsMap.values()))
-                .startingSystem(phaseSystemsMap.get(BlackJackSystems.DealHidden)).eventCommander(commander).build();
+                .startingSystem(phaseSystemsMap.get(BlackJackSystems.DealHidden))
+                .eventCommander(commander).build();
         InputMultiplexer inputMultiplexer = new InputMultiplexer(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
-                if (keycode == Input.Keys.ESCAPE){
+                if (keycode == Input.Keys.ESCAPE) {
                     Gdx.app.exit();
                 }
                 return super.keyDown(keycode);
             }
         });
         Gdx.input.setInputProcessor(inputMultiplexer);
-
         initBlackJack();
     }
 
@@ -83,16 +83,21 @@ public class BlackjackGame {
         subscriptor = new Object() {
             @Subscribe
             public void gameEnd(GameFinishedEvent event) {
-                log.trace("Game ended, winner is player " + event.getWinnerPosition() + " with " + event.getWinnerCount());
+                log.trace("Game ended, winner is player " + event.getWinnerPosition() + " with "
+                        + event.getWinnerCount());
                 mGameEnd.set(true);
             }
         };
         commander.subscribe(subscriptor);
-        new EntityBuilder(cardgameFramework.getWorld()).tag("player1").group("1").with(new PlayerControlled(), new PlayerPosition(0), new PlayerHand()).build();
-        new EntityBuilder(cardgameFramework.getWorld()).tag("player2").group("2").with(new PlayerPosition(1), new PlayerHand()).build();
-        ArrayList<GameCard> shuffledDeck = new ArrayList<GameCard>(Arrays.asList(GameCard.getDeck()));
+        new EntityBuilder(cardgameFramework.getWorld()).tag("player1").group("1")
+                .with(new PlayerControlled(), new PlayerPosition(0), new PlayerHand()).build();
+        new EntityBuilder(cardgameFramework.getWorld()).tag("player2").group("2")
+                .with(new PlayerPosition(1), new PlayerHand()).build();
+        ArrayList<GameCard> shuffledDeck = new ArrayList<GameCard>(
+                Arrays.asList(GameCard.getDeck()));
         Collections.shuffle(shuffledDeck);
-        new EntityBuilder(cardgameFramework.getWorld()).tag("deck").with(new PlayerHand(shuffledDeck)).build();
+        new EntityBuilder(cardgameFramework.getWorld()).tag("deck")
+                .with(new PlayerHand(shuffledDeck)).build();
     }
 
     public void step() {
