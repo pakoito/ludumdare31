@@ -5,6 +5,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
+import com.pacoworks.cardframework.eventbus.IEventCommander;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
 import net.mostlyoriginal.game.BlackJackSystems;
 import net.mostlyoriginal.game.IGetPhaseFromId;
@@ -22,6 +23,9 @@ public class SelectNextPlayerSystem extends BaseBlackjackSystem {
     private final int mPlayerTotal;
 
     private final EventCommander eventCommander;
+
+    @Wire
+    private IEventCommander mCommander;
 
     private ComponentMapper<PlayerPosition> playerPositionComponentMapper;
 

@@ -3,6 +3,7 @@ package net.mostlyoriginal.game.component.game;
 
 import com.artemis.Component;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -12,8 +13,8 @@ import java.util.List;
 public class PlayerHand extends Component {
     public final List<GameCard> hand;
 
-    public PlayerHand(List<GameCard> hand) {
-        this.hand = hand;
+    public PlayerHand() {
+        this.hand = new ArrayList<GameCard>();
     }
 
     public int getCount() {

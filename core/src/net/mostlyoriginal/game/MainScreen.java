@@ -26,6 +26,9 @@ import net.mostlyoriginal.api.system.render.AnimRenderSystem;
 import net.mostlyoriginal.api.system.render.MapRenderSystem;
 import net.mostlyoriginal.api.system.script.EntitySpawnerSystem;
 import net.mostlyoriginal.api.system.script.SchedulerSystem;
+import net.mostlyoriginal.game.component.agent.PlayerControlled;
+import net.mostlyoriginal.game.component.game.PlayerHand;
+import net.mostlyoriginal.game.component.game.PlayerPosition;
 import net.mostlyoriginal.game.events.EventCommander;
 import net.mostlyoriginal.game.events.GameFinishedEvent;
 import net.mostlyoriginal.game.events.KeycodeEvent;
@@ -65,6 +68,7 @@ public class MainScreen implements Screen {
     private final EventCommander commander;
 
     private AtomicBoolean mGameEnd = new AtomicBoolean(false);
+
     private Object subscriptor;
 
     public MainScreen() {
@@ -84,10 +88,10 @@ public class MainScreen implements Screen {
         cardgameFramework = CardgameFramework.builder().victoryChecker(new IVictoryDecider() {
             @Override
             public boolean isVictoryCondition() {
-                return false;
+                return mGameEnd.get();
             }
         }).phaseSystems(new ArrayList<BasePhaseSystem>(phaseSystemsMap.values()))
-                .startingSystem(phaseSystemsMap.get(BlackJackSystems.SelectNextPlayer)).eventCommander(commander).build();
+                .startingSystem(phaseSystemsMap.get(BlackJackSystems.DealHidden)).eventCommander(commander).build();
         reactiveInputs = new ReactiveInputs();
         inputMultiplexer = new InputMultiplexer(new InputAdapter() {
             @Override
@@ -98,8 +102,6 @@ public class MainScreen implements Screen {
             }
         });
         Gdx.input.setInputProcessor(inputMultiplexer);
-        // FIXME remove
-        mockInit();
         world = new World();
         // @todo comment out systems you do not need for your game.
         // NS2D:
@@ -183,9 +185,11 @@ public class MainScreen implements Screen {
         world.setSystem(new MapRenderSystem());
         world.setSystem(new AnimRenderSystem());
         world.initialize();
+
+        initBlackJack();
     }
 
-    private void mockInit() {
+    private void initBlackJack() {
         reactiveInputs.observeMove(new IKnownMove() {
             @Override
             public List<Integer> getInputSequence() {
@@ -225,6 +229,8 @@ public class MainScreen implements Screen {
             }
         };
         commander.subscribe(subscriptor);
+        world.createEntity().edit().add(new PlayerControlled()).add(new PlayerHand()).add(new PlayerPosition(0)).getEntity();
+        world.createEntity().edit().add(new PlayerControlled()).add(new PlayerHand()).add(new PlayerPosition(1)).getEntity();
     }
 
     @Override

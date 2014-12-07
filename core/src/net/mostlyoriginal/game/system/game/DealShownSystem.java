@@ -23,7 +23,7 @@ public class DealShownSystem extends BaseBlackjackSystem {
 
     private ComponentMapper<PlayerHand> playerHandComponentMapper;
 
-    private BasePhaseSystem[] pushSystems;
+    private BasePhaseSystem[] pushSystems = new BasePhaseSystem[0];
 
     public DealShownSystem(IGetPhaseFromId resolver) {
         super(Aspect.getAspectForAll(PlayerControlled.class), resolver);

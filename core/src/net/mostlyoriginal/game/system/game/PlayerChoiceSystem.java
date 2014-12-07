@@ -15,7 +15,7 @@ import net.mostlyoriginal.game.component.game.PlayerHand;
  * Created by Paco on 07/12/2014. See LICENSE.md
  */
 public class PlayerChoiceSystem extends BaseBlackjackSystem {
-    private BasePhaseSystem[] pushSystems;
+    private BasePhaseSystem[] pushSystems = new BasePhaseSystem[0];
 
     /**
      * Creates an entity system that uses the specified aspect as a matcher against entities.
