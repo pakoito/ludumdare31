@@ -1,6 +1,9 @@
 
 package net.mostlyoriginal.blackjack.components;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -30,6 +33,13 @@ public class GameCard {
             }
         }
         return deck;
+    }
+
+    public static ArrayList<GameCard> getShuffledDeck() {
+        ArrayList<GameCard> shuffledDeck = new ArrayList<GameCard>(
+                Arrays.asList(GameCard.getDeck()));
+        Collections.shuffle(shuffledDeck);
+        return shuffledDeck;
     }
 
     public enum Suit {
