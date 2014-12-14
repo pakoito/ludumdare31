@@ -50,8 +50,10 @@ public class BlackjackGame {
         phaseSystemsMap.put(BlackJackSystems.DealShown, new DealShownSystem(resolver));
         phaseSystemsMap.put(BlackJackSystems.PlayerChoice, new PlayerChoiceSystem(resolver));
         phaseSystemsMap.put(BlackJackSystems.CleanupSystem, new CleanupSystem(resolver));
+        phaseSystemsMap.put(BlackJackSystems.UpdateWinnerPlayerSystem,
+                new UpdateWinnerSystem(resolver));
         phaseSystemsMap.put(BlackJackSystems.SelectNextPlayer, new SelectNextPlayerSystem(resolver,
-                2, commander));
+                2));
         cardgameFramework = CardgameFramework.builder().victoryChecker(new IVictoryDecider() {
             @Override
             public boolean isVictoryCondition() {

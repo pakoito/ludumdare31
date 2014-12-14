@@ -7,6 +7,7 @@ import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
 import net.mostlyoriginal.blackjack.BlackJackSystems;
+import net.mostlyoriginal.blackjack.BlackJackTags;
 import net.mostlyoriginal.blackjack.components.GameCard;
 import net.mostlyoriginal.blackjack.components.PlayerHand;
 import net.mostlyoriginal.blackjack.components.PlayerPosition;
@@ -31,12 +32,12 @@ public class CleanupSystem extends BaseBlackjackSystem {
         super.begin();
         Entity deck = tagManager.getEntity("deck");
         deck.edit().add(new PlayerHand(GameCard.getShuffledDeck())).getEntity();
+        tagManager.unregister(BlackJackTags.WINNER);
     }
 
     @Override
     protected void process(Entity e) {
-        e.edit().remove(PlayerControlled.class).getEntity();
-        e.edit().add(new PlayerHand());
+        e.edit().remove(PlayerControlled.class).add(new PlayerHand()).getEntity();
     }
 
     @Override

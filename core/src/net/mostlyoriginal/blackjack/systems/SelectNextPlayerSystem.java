@@ -8,11 +8,10 @@ import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.pacoworks.cardframework.systems.BasePhaseSystem;
 import net.mostlyoriginal.blackjack.BlackJackSystems;
-import net.mostlyoriginal.blackjack.components.GameCard;
+import net.mostlyoriginal.blackjack.BlackJackTags;
 import net.mostlyoriginal.blackjack.components.PlayerHand;
 import net.mostlyoriginal.blackjack.components.PlayerPosition;
 import net.mostlyoriginal.game.component.agent.PlayerControlled;
-import net.mostlyoriginal.game.events.EventCommander;
 
 /**
  * Created by Paco on 07/12/2014. See LICENSE.md
@@ -21,32 +20,24 @@ import net.mostlyoriginal.game.events.EventCommander;
 public class SelectNextPlayerSystem extends BaseBlackjackSystem {
     private final int mPlayerTotal;
 
-    private final EventCommander eventCommander;
-
     private ComponentMapper<PlayerPosition> playerPositionComponentMapper;
-
-    private ComponentMapper<PlayerHand> playerHandComponentMapper;
 
     private ComponentMapper<PlayerControlled> playerControlledComponentMapper;
 
-    private boolean isNext;
-
-    private int mWinner = -1;
-
-    private int mWinnerCount = -1;
-
-    private boolean isEnded;
+    private ComponentMapper<PlayerHand> playerHandComponentMapper;
 
     private TagManager tagManager;
+
+    private boolean isNext;
+
+    private boolean isEnded;
 
     /**
      * Creates an entity system that uses the specified aspect as a matcher against entities.
      */
-    public SelectNextPlayerSystem(IGetPhaseFromId resolver, int playerTotal,
-            EventCommander eventCommander) {
-        super(Aspect.getAspectForAll(PlayerHand.class, PlayerPosition.class), resolver);
+    public SelectNextPlayerSystem(IGetPhaseFromId resolver, int playerTotal) {
+        super(Aspect.getAspectForAll(PlayerPosition.class), resolver);
         this.mPlayerTotal = playerTotal;
-        this.eventCommander = eventCommander;
         isNext = true;
         isEnded = false;
     }
@@ -54,11 +45,6 @@ public class SelectNextPlayerSystem extends BaseBlackjackSystem {
     @Override
     protected void process(Entity e) {
         int position = playerPositionComponentMapper.get(e).position;
-        int count = playerHandComponentMapper.get(e).getCount();
-        if (count > 0 && count < 22 && count > mWinnerCount) {
-            mWinner = position;
-            mWinnerCount = count;
-        }
         if (isNext) {
             e.edit().add(new PlayerControlled());
             isNext = false;
@@ -66,24 +52,22 @@ public class SelectNextPlayerSystem extends BaseBlackjackSystem {
         } else {
             if (playerControlledComponentMapper.getSafe(e) != null) {
                 if (position + 1 >= mPlayerTotal) {
-                    log.trace("Game ended, winner is player " + (mWinner + 1) + " with "
-                            + mWinnerCount);
-                    mWinner = -1;
-                    mWinnerCount = -1;
+                    Entity mWinner = tagManager.getEntity(BlackJackTags.WINNER);
+                    log.trace("===========================================");
+                    if (mWinner != null) {
+                        String msg = "== Game end, winner is player: "
+                                + (playerPositionComponentMapper.get(mWinner).position + 1)
+                                + " with " + playerHandComponentMapper.get(mWinner).getCount();
+                        log.trace(msg.toUpperCase());
+                    } else {
+                        log.trace("== Game ended with no winner".toUpperCase());
+                    }
+                    log.trace("===========================================\n\n");
                     isEnded = true;
                 }
                 isNext = true;
                 e.edit().remove(PlayerControlled.class);
             }
-        }
-    }
-
-    @Override
-    protected void end() {
-        super.end();
-        if (isEnded){
-            Entity deck = tagManager.getEntity("deck");
-            deck.edit().add(new PlayerHand(GameCard.getShuffledDeck())).getEntity();
         }
     }
 

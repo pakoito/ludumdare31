@@ -5,5 +5,5 @@ package net.mostlyoriginal.blackjack;
  * See LICENSE.md
  */
 public enum BlackJackSystems {
-    CountCheck, DealHidden, DealShown, PlayerChoice, SelectNextPlayer, CleanupSystem
+    CountCheck, DealHidden, DealShown, PlayerChoice, SelectNextPlayer, CleanupSystem, UpdateWinnerPlayerSystem
 }

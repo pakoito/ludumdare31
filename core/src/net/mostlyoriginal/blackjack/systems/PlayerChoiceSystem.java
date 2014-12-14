@@ -46,7 +46,7 @@ public class PlayerChoiceSystem extends BaseBlackjackSystem {
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             log.trace("Player checks with: " + hand.hand);
             pushSystems = new BasePhaseSystem[1];
-            pushSystems[0] = getPhaseFromName(BlackJackSystems.SelectNextPlayer);
+            pushSystems[0] = getPhaseFromName(BlackJackSystems.UpdateWinnerPlayerSystem);
             firstEnter = true;
         } else {
             if(firstEnter) {
