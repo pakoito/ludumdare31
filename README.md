@@ -6,4 +6,4 @@ There's a fully playable java console blackjack game coded, the black screen is 
 
 Known issues
 =========================
-Cards in player hands are not marked as visible or invisible.
+Cards in player hands are not marked as visible or hidden.
